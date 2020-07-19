@@ -1,0 +1,1 @@
+A simple ModMail bot for the awesome Rocket Legion community!
