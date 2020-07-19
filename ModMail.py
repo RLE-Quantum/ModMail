@@ -6,7 +6,8 @@ bot.remove_command('help')
 
 @bot.event
 async def on_ready():
-	print('logged in.')
+    await bot.change_presence(status=discord.Status.online, activity=discord.Game("!help in DMs"))
+    print('Bot is ready to rumble')
 
 @bot.command()
 async def help(ctx, *, description):
@@ -74,7 +75,7 @@ async def reply(ctx, *, description):
 
 @bot.command()
 @commands.has_any_role('Head of Administration', 'Administrator', 'Owner', 'Senior Moderator')
-async def close(ctx, *, reason):
+async def close(ctx, *, reason=None):
 	closeEmbed = discord.Embed(
 		title='Ticket Closed',
 		description=f'Your ModMail ticket was closed by {ctx.author}. Thanks for using ModMail!',
@@ -91,18 +92,18 @@ async def close(ctx, *, reason):
 	await bot.logs.send(embed=closeLogsEmbed)
 
 @close.error
-async def close_error(ctx):
+async def close_error(ctx, error):
 	if isinstance(error, commands.MissingRequiredArgument):
 		await ctx.send("You didn't provide a reason. `!close <reason>`.")
 
 @reply.error
-async def reply_error(ctx):
+async def reply_error(ctx, error):
 	if isinstance(error, commands.MissingRequiredArgument):
 		await ctx.send("You didn't provide a message to send the staff team. `!reply <message>`.")
 
 @help.error
-async def help_error(ctx):
+async def help_error(ctx, error):
 	if isinstance(error, commands.MissingRequiredArgument):
 		await ctx.send("You didn't provide a message to send the staff team. `!help <message>`.")
 
-bot.run('')
+bot.run(token)
